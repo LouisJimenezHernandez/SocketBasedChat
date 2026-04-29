@@ -1,3 +1,4 @@
+# Defined commands for protocol
 SEPARATOR = "|"
 
 JOIN = "JOIN"

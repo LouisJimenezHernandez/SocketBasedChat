@@ -68,11 +68,7 @@ def main():
     )
     receive_thread.start()
 
-    print("Commands:")
-    print("  /dm username message")
-    print("  /list")
-    print("  /quit")
-    print("  anything else sends a public message")
+    print("For a list of commands, type /help")
 
     while True:
         text = input().strip()
@@ -83,6 +79,15 @@ def main():
 
         elif text == "/list":
             client.sendall(build_message(LIST).encode())
+
+        elif text == "/help":
+                print("Commands:")
+                print("/dm username message")
+                print("/list")
+                print("/whoami")
+                print("/quit")
+
+            
 
         elif text.startswith("/dm "):
             pieces = text.split(" ", 2)
