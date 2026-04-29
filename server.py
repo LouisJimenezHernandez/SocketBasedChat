@@ -95,6 +95,36 @@ def handle_client(conn, addr):
             elif command == WHOAMI:
                 send_message(conn, SERVER, f"You are: {username}")
 
+            elif command == RENAME:
+                if len(parts) != 1:
+                    send_message(conn, ERROR, "Usage: RENAME|new_username")
+
+                else:
+                    new_username = parts[0].strip()
+
+                    if not new_username:
+                        send_message(conn, ERROR, "Username cannot be empty")
+
+                    else:
+                        with lock:
+                            if new_username in clients:
+                                send_message(conn, ERROR, "Username already taken")
+
+                            else:
+                                old_username = username
+
+                                del clients[username]
+                                clients[new_username] = conn
+
+                                username = new_username
+
+                        send_message(conn, OK, f"Username changed to {new_username}")
+                        broadcast(
+                            SERVER,
+                            f"{old_username} is now known as {new_username}",
+                            exclude=None
+                        )
+
             elif command == QUIT:
                 send_message(conn, OK, "Goodbye")
                 break

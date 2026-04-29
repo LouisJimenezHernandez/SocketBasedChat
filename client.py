@@ -86,9 +86,19 @@ def main():
                 print("/list")
                 print("/whoami")
                 print("/quit")
+                print("/rename newname")
 
         elif text == "/whoami":
             client.sendall(build_message(WHOAMI).encode())
+
+        elif text.startswith("/rename "):
+            pieces = text.split(" ", 1)
+
+            if len(pieces) < 2:
+                print("Usage: /rename new_username")
+            else:
+                new_username = pieces[1].strip()
+                client.sendall(build_message(RENAME, new_username).encode())
 
         elif text.startswith("/dm "):
             pieces = text.split(" ", 2)

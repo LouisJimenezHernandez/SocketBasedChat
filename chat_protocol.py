@@ -7,6 +7,7 @@ DM = "DM"
 LIST = "LIST"
 QUIT = "QUIT"
 WHOAMI = "WHOAMI"
+RENAME = "RENAME"
 
 OK = "OK"
 ERROR = "ERROR"
