@@ -92,6 +92,9 @@ def handle_client(conn, addr):
 
                 send_message(conn, USERLIST, users)
 
+            elif command == WHOAMI:
+                send_message(conn, SERVER, f"You are: {username}")
+
             elif command == QUIT:
                 send_message(conn, OK, "Goodbye")
                 break

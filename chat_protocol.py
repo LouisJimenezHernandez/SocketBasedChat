@@ -6,6 +6,7 @@ MSG = "MSG"
 DM = "DM"
 LIST = "LIST"
 QUIT = "QUIT"
+WHOAMI = "WHOAMI"
 
 OK = "OK"
 ERROR = "ERROR"

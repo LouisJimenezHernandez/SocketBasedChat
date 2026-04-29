@@ -87,7 +87,8 @@ def main():
                 print("/whoami")
                 print("/quit")
 
-            
+        elif text == "/whoami":
+            client.sendall(build_message(WHOAMI).encode())
 
         elif text.startswith("/dm "):
             pieces = text.split(" ", 2)
