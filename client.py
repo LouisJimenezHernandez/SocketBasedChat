@@ -70,7 +70,7 @@ def main():
     print("  anything else sends a public message")
 
     while True:
-        text = input()
+        text = input().strip()
 
         if text == "/quit":
             client.sendall(build_message(QUIT).encode())

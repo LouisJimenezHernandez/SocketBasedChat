@@ -40,7 +40,7 @@ def handle_client(conn, addr):
             send_message(conn, ERROR, "First message must be JOIN|username")
             return
 
-        username = parts[0]
+        username = parts[0].strip()
 
         with lock:
             if username in clients:
@@ -72,7 +72,8 @@ def handle_client(conn, addr):
                 if len(parts) != 2:
                     send_message(conn, ERROR, "Usage: DM|recipient|message")
                 else:
-                    recipient, message = parts
+                    recipient = parts[0].strip()
+                    message = parts[1].strip()
 
                     with lock:
                         target_conn = clients.get(recipient)
@@ -85,7 +86,7 @@ def handle_client(conn, addr):
 
             elif command == LIST:
                 with lock:
-                    users = ",".join(clients.keys())
+                    users = ", ".join(clients.keys())
 
                 send_message(conn, USERLIST, users)
 

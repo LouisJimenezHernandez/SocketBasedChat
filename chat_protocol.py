@@ -35,6 +35,6 @@ def parse_message(raw_message):
 
     pieces = raw_message.split(SEPARATOR)
     command = pieces[0]
-    parts = pieces[1:]
+    parts = [part.strip() for part in pieces[1:]]
 
     return command, parts
