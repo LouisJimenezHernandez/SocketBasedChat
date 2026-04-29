@@ -25,6 +25,11 @@ def receive_messages(client):
             elif command == ERROR:
                 print(f"[ERROR] {parts[0]}")
 
+                if "Username" in parts[0]:
+                    print("Closing client...")
+                    client.close()
+                    break
+
             elif command == SERVER:
                 print(f"[Server] {parts[0]}")
 

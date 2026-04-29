@@ -40,14 +40,15 @@ def handle_client(conn, addr):
             send_message(conn, ERROR, "First message must be JOIN|username")
             return
 
-        username = parts[0].strip()
+        requested_username = parts[0].strip()
 
         with lock:
-            if username in clients:
+            if requested_username in clients:
                 send_message(conn, ERROR, "Username already taken")
                 return
 
-            clients[username] = conn
+            clients[requested_username] = conn
+            username = requested_username
 
         send_message(conn, OK, f"Welcome, {username}")
         broadcast(SERVER, f"{username} joined the chat", exclude=conn)
@@ -56,6 +57,7 @@ def handle_client(conn, addr):
 
         while True:
             raw = conn.recv(1024).decode()
+            print(f"[{username}] RAW -> {raw}")
 
             if not raw:
                 break
@@ -117,19 +119,24 @@ def main():
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind((HOST, PORT))
     server.listen()
+    server.settimeout(1)
 
     print(f"SimpleChat server running on {HOST}:{PORT}")
 
     try:
         while True:
-            conn, addr = server.accept()
+            try:
+                conn, addr = server.accept()
 
-            thread = threading.Thread(
-                target=handle_client,
-                args=(conn, addr),
-                daemon=True
-            )
-            thread.start()
+                thread = threading.Thread(
+                    target=handle_client,
+                    args=(conn, addr),
+                    daemon=True
+                )
+                thread.start()
+
+            except socket.timeout:
+                continue
 
     except KeyboardInterrupt:
         print("\nServer shutting down...")
